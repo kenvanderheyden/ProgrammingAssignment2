@@ -1,7 +1,25 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Verified my code with test run like the following:
 
-## makeCacheMatrix
+## create a matrix 
+## > aMatrix = rbind(c(1, -1/4), c(-1/4, 1))
+
+## store it in cache 
+## > aCachedMatrix <- makeCacheMatrix(aMatrix)
+
+## get inverted matrix from cache
+## > cacheSolve(aCachedMatrix)
+
+## check if inverted is correct
+## > aMatrix %*% cacheSolve(aCachedMatrix)
+## getting cached data
+## [,1] [,2]
+## [1,]    1    0
+## [2,]    0    1
+
+## Seems correct, as the result returns the indentity matrix
+
+
+## makeCacheMatrix, creates a matrix object that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL
@@ -32,17 +50,24 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## cacheSolve, computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
+## If the inverse has already been calculated, then cachesolve should retrieve the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-    ## Return a matrix that is the inverse of 'x' ( using solve(matrix) function to return the inverse )
+    
     m <- x$getmatrix()
+    
     if (!is.null(m)) {
         message("getting cached data")
         return(m)
     }
+    
     data <- x$get()
-    m <- solve(data, ...)
+    
+    ## solve(matrix) returns the inverse of the matrix 
+    ## can be verified by multiplying the matrix with its inverted matrix, should result in the identity matrix. 
+    m <- solve(data, ...) 
+    
     x$setmatrix(m)
     m
 }
